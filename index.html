@@ -1,0 +1,421 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Encuesta sobre IA</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: una columna de lectura (680px), una sección por pantalla, barra de avance fija arriba. */
+:root{
+  --bg:#F2F5F6; --surface:#FFFFFF; --ink:#13242B; --muted:#52666E; --line:#D3DCE0;
+  --accent:#0A6B73; --accent-ink:#FFFFFF; --accent-soft:#DCEFF0; --warn:#B3261E; --warn-soft:#FBE9E7; --agree:#2A9467; --disagree:#8A5FA8; --neutral:#8792A0;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1A1F; --surface:#142329; --ink:#E5EEF0; --muted:#9CB0B7; --line:#2A3D44;
+  --accent:#4FC1C9; --accent-ink:#06262A; --accent-soft:#15393D; --warn:#FF8A80; --warn-soft:#3A1E1C; --agree:#4CC38A; --disagree:#B58AD1; --neutral:#8F9AA8; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1A1F; --surface:#142329; --ink:#E5EEF0; --muted:#9CB0B7; --line:#2A3D44;
+  --accent:#4FC1C9; --accent-ink:#06262A; --accent-soft:#15393D; --warn:#FF8A80; --warn-soft:#3A1E1C; --agree:#4CC38A; --disagree:#B58AD1; --neutral:#8F9AA8; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+.wrap{max-width:680px;margin:0 auto}
+header.top{padding:28px 0 18px}
+.eyebrow{font:600 12px/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:600 clamp(24px,5.5vw,32px)/1.2 var(--serif);margin:8px 0 10px;text-wrap:balance}
+.tag{display:inline-block;font:600 12px/1 var(--sans);letter-spacing:.04em;padding:5px 9px;border-radius:4px;background:var(--accent-soft);color:var(--accent)}
+.progress{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:10px 0 12px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.progress .meta{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-bottom:7px}
+.bar{height:5px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .25s}
+section.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px 22px}
+h2{font:600 22px/1.25 var(--serif);margin:0 0 14px;text-wrap:balance}
+.intro p{margin:0 0 12px;color:var(--ink)}
+.q{padding:18px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend,.lab{font-weight:600;padding:0;margin-bottom:6px;display:block}
+.help{color:var(--muted);font-size:14px;margin:0 0 10px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);border-radius:8px;margin-top:8px;cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin-top:4px;accent-color:var(--accent);flex:none}
+.opt:has(input:checked){background:var(--accent-soft);border-color:var(--accent)}
+input[type=text],input[type=number],textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:6px}
+textarea{min-height:92px;resize:vertical}
+input:focus-visible,textarea:focus-visible,.opt:has(input:focus-visible),button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lrow{padding:16px 0 10px;border-top:1px dashed var(--line)}
+.lrow:first-of-type{border-top:0}
+.lrow .t{margin:0 0 12px}
+.scale{display:grid;grid-template-columns:minmax(64px,.26fr) 1fr minmax(64px,.26fr);gap:10px;align-items:center}
+.scale .lo{color:var(--disagree);font-size:14px;font-weight:500}
+.scale .hi{color:var(--agree);font-size:14px;font-weight:500;text-align:right}
+.circles{display:grid;grid-template-columns:repeat(7,1fr);align-items:center;justify-items:center}
+.c{display:block;cursor:pointer;line-height:0;padding:3px}
+.c input{position:absolute;opacity:0;pointer-events:none}
+.c span{display:block;width:var(--d);height:var(--d);border:2px solid var(--col);border-radius:50%;background:transparent;transition:background .12s}
+.c1,.c7{--d:40px}.c2,.c6{--d:34px}.c3,.c5{--d:28px}.c4{--d:22px}
+.c1,.c2,.c3{--col:var(--disagree)}.c4{--col:var(--neutral)}.c5,.c6,.c7{--col:var(--agree)}
+.c:hover span{background:color-mix(in srgb,var(--col) 20%,transparent)}
+.c input:checked+span{background:var(--col)}
+.c input:focus-visible+span{outline:2px solid var(--ink);outline-offset:3px}
+@media (max-width:560px){.scale{grid-template-columns:1fr 1fr;grid-template-areas:"c c" "lo hi"}.circles{grid-area:c}.scale .lo{grid-area:lo}.scale .hi{grid-area:hi}.c1,.c7{--d:36px}.c2,.c6{--d:31px}.c3,.c5{--d:26px}.c4{--d:20px}}
+.err .errmsg{display:block}
+.errmsg{display:none;color:var(--warn);font-size:14px;margin-top:8px;font-weight:500}
+.q.err{background:var(--warn-soft);margin-inline:-10px;padding-inline:10px;border-radius:8px}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+button{font:600 15px/1 var(--sans);padding:13px 20px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button:disabled{opacity:.55;cursor:default}
+.note{font-size:14px;color:var(--muted)}
+.end h2{margin-bottom:10px}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.scroll{overflow-x:auto}
+footer{margin-top:22px;font-size:13px;color:var(--muted)}
+footer a{color:var(--accent)}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+@media print{body{background:#fff!important;color:#000!important;padding:0!important}.progress,header.top,footer,button{display:none!important}.wrap{max-width:none}.card{border:0!important;padding:0!important}details{break-inside:avoid}details:not([open])>*:not(summary){display:block!important}table{font-size:11px}th,td{padding:4px;border:1px solid #bbb}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Universidad Autónoma del Caribe · Metodología de la investigación</div>
+    <h1 id="h1"></h1>
+  </header>
+  <div class="progress" id="progress" hidden><div class="meta"><span id="pname"></span><span id="pcount"></span></div><div class="bar"><i id="pbar" style="width:0"></i></div></div>
+  <main id="app"></main>
+  <footer id="foot"></footer>
+</div>
+
+<script>
+(function(){
+/* CONFIGURACIÓN: reemplaza estos dos valores con los datos de tu proyecto Supabase. */
+const SUPABASE_URL = "https://TU-PROYECTO.supabase.co";
+const SUPABASE_ANON_KEY = "PEGA_AQUI_TU_CLAVE_ANON_PUBLICA";
+const SUPABASE_TABLE = "respuestas";
+const supabaseConfigured = () => !SUPABASE_URL.includes("TU-PROYECTO") && !SUPABASE_ANON_KEY.includes("PEGA_AQUI");
+const I = {"version":"1.0","titulo":"Uso y opinión sobre la IA generativa","scales":{"acuerdo7":{"min":1,"max":7,"low":"En desacuerdo","high":"De acuerdo","gsLabels":["Muy en desacuerdo","En desacuerdo","Algo en desacuerdo","Neutral","Algo de acuerdo","De acuerdo","Muy de acuerdo"]}},"sections":[{"id":"consentimiento","title":"Antes de empezar","texto":["Esta encuesta hace parte de una investigación de la Universidad Autónoma del Caribe sobre cómo usa la gente los asistentes de IA generativa (ChatGPT, Gemini, Copilot, Meta AI y otros) en su vida diaria, en el trabajo y en los estudios, y qué opina de ese uso.","Son unas 30 respuestas rápidas, en unos 6 minutos. No hay respuestas buenas ni malas, y no importa si casi no usas IA: tu opinión también cuenta. No te preguntamos dónde estudias ni dónde trabajas, y dar tu nombre es opcional.","La participación es voluntaria y puedes retirarte en cualquier momento cerrando esta página. Los datos se anonimizan antes del análisis y se tratan según la Ley Estatutaria 1581 de 2012 sobre protección de datos personales."],"items":[{"id":"acepta","type":"single","required":true,"label":"¿Aceptas participar en esta encuesta?","options":["Sí, acepto participar","No acepto"],"endIf":{"equals":"No acepto","message":"Gracias por tu tiempo. No se guardó ninguna respuesta."}}]},{"id":"criterios","title":"Una pregunta rápida","items":[{"id":"elegible","type":"single","required":true,"label":"¿Tienes 18 años o más?","options":["Sí","No"],"endIf":{"equals":"No","message":"Gracias. Esta encuesta es solo para personas mayores de edad. No se guardó ninguna respuesta."}}]},{"id":"perfil","title":"Sobre ti","items":[{"id":"edad","type":"number","required":true,"min":18,"max":99,"label":"¿Cuántos años tienes?"},{"id":"genero","type":"single","required":true,"label":"¿Con qué género te identificas?","options":["Mujer","Hombre","Otro","Prefiero no decirlo"]},{"id":"nivel_educativo","type":"single","required":true,"label":"¿Cuál es el nivel de estudios más alto que has alcanzado?","options":["Primaria","Bachillerato","Técnico o tecnológico","Pregrado universitario","Posgrado"]},{"id":"ocupacion","type":"single","required":true,"label":"¿A qué te dedicas principalmente?","options":["Estudio","Trabajo","Estudio y trabajo","Tareas del hogar","Busco empleo","Estoy jubilado o pensionado","Otra cosa"]},{"id":"uso_ia","type":"single","required":true,"label":"¿Usas asistentes de IA generativa (ChatGPT, Gemini, Copilot, Meta AI u otros)?","options":["Sí, de forma habitual","Sí, de vez en cuando","Lo probé una o dos veces","No, nunca"]}]},{"id":"uso","title":"Qué herramientas usas y para qué","showIf":{"id":"uso_ia","notEquals":"No, nunca"},"items":[{"id":"herramientas","type":"multi","required":true,"label":"¿Cuáles de estas herramientas has usado?","help":"Marca todas las que apliquen.","options":["ChatGPT","Gemini","Claude","Microsoft Copilot","Meta AI (WhatsApp, Instagram)","DeepSeek","Grok","Otra"],"other":"Otra"},{"id":"frecuencia","type":"single","required":true,"label":"En las últimas cuatro semanas, ¿con qué frecuencia la usaste?","options":["Menos de una vez por semana","Uno o dos días por semana","Tres o cuatro días por semana","Casi todos los días","Varias veces al día"]},{"id":"ambitos","type":"likert","scale":"acuerdo7","required":true,"label":"Elige qué tan de acuerdo estás con cada frase.","rows":[{"id":"amb_cotidiano","text":"Uso IA en mis tareas cotidianas (recetas, compras, trámites, viajes)"},{"id":"amb_trabajo","text":"Uso IA en mi trabajo"},{"id":"amb_estudio","text":"Uso IA en mis estudios o tareas académicas"}]},{"id":"tareas","type":"likert","scale":"acuerdo7","required":true,"label":"Elige qué tan de acuerdo estás con cada frase.","rows":[{"id":"tar_info","text":"La uso para buscar información o resolver dudas"},{"id":"tar_escribir","text":"La uso para escribir o corregir textos"},{"id":"tar_aprender","text":"La uso para entender o aprender un tema"}]}]},{"id":"interaccion","title":"Cómo la usas","showIf":{"id":"uso_ia","notEquals":"No, nunca"},"items":[{"id":"interaccion","type":"likert","scale":"acuerdo7","required":true,"label":"Elige qué tan de acuerdo estás con cada frase.","rows":[{"id":"int_verifico","text":"Verifico en otras fuentes lo que me responde la IA"},{"id":"int_intento_primero","text":"Intento resolver o redactar yo primero y luego la consulto"},{"id":"int_copio","text":"Copio lo que responde la IA sin revisarlo"},{"id":"int_decido","text":"Tomo decisiones importantes basándome solo en lo que me dice la IA"}]}]},{"id":"autorreg","title":"Cómo te organizas al trabajar o aprender","texto":["Piensa en tu forma de trabajar o aprender, con o sin IA."],"items":[{"id":"autorreg","type":"likert","scale":"acuerdo7","required":true,"label":"Elige qué tan de acuerdo estás con cada frase.","rows":[{"id":"ap_plan","text":"Planeo los pasos antes de empezar una tarea importante"},{"id":"ae_estrategia","text":"Si algo no funciona, pruebo otra estrategia en lugar de insistir con la misma"},{"id":"ar_error","text":"Cuando me equivoco, analizo el error para no repetirlo"}]}]},{"id":"percepciones","title":"Qué opinas de la IA generativa","items":[{"id":"percepcion","type":"likert","scale":"acuerdo7","required":true,"label":"Elige qué tan de acuerdo estás con cada frase.","rows":[{"id":"pg_acuerdo","text":"En general, estoy de acuerdo con que la gente use IA generativa en su vida diaria"},{"id":"rg_usotrabajo","text":"Está bien usar IA para las tareas del trabajo o del estudio"},{"id":"pr_depender","text":"Me preocupa depender demasiado de la IA"},{"id":"pr_incorrecto","text":"La IA puede dar información incorrecta que parece correcta"},{"id":"pr_privacidad","text":"Me preocupa la privacidad de lo que se comparte con la IA"},{"id":"rg_reglas","text":"Debería haber reglas claras sobre el uso de IA en el trabajo y en la educación"}]}]},{"id":"cierre","title":"Para cerrar","items":[{"id":"comentarios","type":"long","required":false,"label":"¿Qué es lo mejor y qué es lo que más te preocupa de la IA generativa? (opcional)"},{"id":"nombre","type":"text","required":false,"label":"Tu nombre (opcional)","help":"Puedes dejarlo vacío: tus respuestas valen igual."}]}]};
+const DRAFT_KEY = "encuesta-ia-borrador-" + I.version;
+const t0 = Date.now();
+const answers = {};
+let step = 0, ended = null, view = "survey";
+
+function h(tag, props, ...kids){
+  const e = document.createElement(tag);
+  for (const k in (props||{})){
+    const v = props[k];
+    if (k === "class") e.className = v;
+    else if (k === "text") e.textContent = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (v === true) e.setAttribute(k, "");
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat()){ if (c == null || c === false) continue; e.append(c.nodeType ? c : document.createTextNode(c)); }
+  return e;
+}
+const $ = s => document.querySelector(s);
+function lsGet(){ try { return JSON.parse(localStorage.getItem(DRAFT_KEY)||"null"); } catch(e){ return null; } }
+function lsSet(v){ try { localStorage.setItem(DRAFT_KEY, JSON.stringify(v)); } catch(e){} }
+function lsClear(){ try { localStorage.removeItem(DRAFT_KEY); } catch(e){} }
+
+document.getElementById("h1").textContent = I.titulo;
+
+function cond(c){
+  if (!c) return true;
+  const v = answers[c.id];
+  if ("notEquals" in c) return v !== c.notEquals;
+  if ("equals" in c) return v === c.equals;
+  return true;
+}
+const visible = () => I.sections.filter(s => cond(s.showIf));
+
+function isEmpty(it){
+  if (it.type === "likert") return it.rows.some(r => answers[r.id] == null);
+  const v = answers[it.id];
+  if (it.type === "multi") return !Array.isArray(v) || v.length === 0;
+  return v == null || v === "" || Number.isNaN(v);
+}
+
+/* ---------- campos ---------- */
+function field(it){
+  const q = h("div", {class:"q", "data-id": it.id});
+  const err = h("span", {class:"errmsg", text:"Esta pregunta es obligatoria."});
+  const help = it.help ? h("p", {class:"help", text:it.help}) : null;
+  const opt = it.required ? null : h("span", {class:"note", text:" (opcional)"});
+
+  if (it.type === "single" || it.type === "multi"){
+    const multi = it.type === "multi";
+    const fs = h("fieldset", null, h("legend", {text: it.label}), help);
+    const otherInput = it.other ? h("input", {type:"text", id:it.id+"_otra", placeholder:"¿Cuál?", "aria-label":"Otra herramienta"}) : null;
+    if (otherInput){
+      otherInput.value = answers[it.id+"_otra"] || "";
+      otherInput.hidden = !(answers[it.id]||[]).includes(it.other);
+      otherInput.addEventListener("input", () => { answers[it.id+"_otra"] = otherInput.value; });
+    }
+    for (const o of it.options){
+      const inp = h("input", {type: multi ? "checkbox" : "radio", name: it.id, value: o});
+      inp.checked = multi ? (answers[it.id]||[]).includes(o) : answers[it.id] === o;
+      inp.addEventListener("change", () => {
+        if (multi){
+          const cur = new Set(answers[it.id]||[]);
+          inp.checked ? cur.add(o) : cur.delete(o);
+          answers[it.id] = it.options.filter(x => cur.has(x));
+          if (otherInput){ otherInput.hidden = !cur.has(it.other); }
+        } else answers[it.id] = o;
+        q.classList.remove("err"); lsSet({answers, step});
+      });
+      fs.append(h("label", {class:"opt"}, inp, h("span", {text:o})));
+    }
+    if (otherInput) fs.append(otherInput);
+    q.append(fs);
+  } else if (it.type === "likert"){
+    const sc = I.scales[it.scale];
+    const fs = h("fieldset", null, h("legend", {text: it.label}), help);
+    for (const r of it.rows){
+      const circles = h("div", {class:"circles", role:"radiogroup", "aria-label": r.text});
+      for (let k = sc.min; k <= sc.max; k++){
+        const nombre = k === sc.min ? sc.low : k === sc.max ? sc.high : "";
+        const inp = h("input", {type:"radio", name:r.id, value:String(k), "aria-label": k + " de " + sc.max + (nombre ? ", " + nombre : "")});
+        inp.checked = answers[r.id] === k;
+        inp.addEventListener("change", () => { answers[r.id] = k; q.classList.remove("err"); lsSet({answers, step}); });
+        circles.append(h("label", {class:"c c"+k}, inp, h("span")));
+      }
+      fs.append(h("div", {class:"lrow"}, h("p", {class:"t", text:r.text}),
+        h("div", {class:"scale"}, h("span", {class:"lo", text:sc.low}), circles, h("span", {class:"hi", text:sc.high}))));
+    }
+    q.append(fs);
+  } else {
+    const long = it.type === "long";
+    const inp = long ? h("textarea", {id:it.id}) : h("input", {id:it.id, type: it.type === "number" ? "number" : "text", inputmode: it.type === "number" ? "numeric" : null, min: it.min, max: it.max});
+    if (answers[it.id] != null) inp.value = answers[it.id];
+    inp.addEventListener("input", () => {
+      const v = inp.value;
+      if (it.type === "number") answers[it.id] = v === "" ? null : Number(v); else answers[it.id] = v;
+      q.classList.remove("err"); lsSet({answers, step});
+    });
+    q.append(h("label", {class:"lab", for:it.id}, it.label, opt));
+    if (help) q.append(help);
+    q.append(inp);
+  }
+  if (!it.required && (it.type === "single" || it.type === "multi")) q.querySelector("legend").append(opt);
+  q.append(err);
+  return q;
+}
+
+function validate(sec){
+  let first = null;
+  for (const it of sec.items){
+    const q = document.querySelector('.q[data-id="'+it.id+'"]');
+    let bad = it.required && isEmpty(it);
+    if (!bad && it.type === "number" && answers[it.id] != null){
+      const v = answers[it.id];
+      if (v < it.min || v > it.max){ bad = true; q.querySelector(".errmsg").textContent = "Escribe un número entre "+it.min+" y "+it.max+"."; }
+    } else if (bad){ q.querySelector(".errmsg").textContent = it.type === "likert" ? "Falta responder alguna fila." : "Esta pregunta es obligatoria."; }
+    q.classList.toggle("err", bad);
+    if (bad && !first) first = q;
+  }
+  if (first) first.scrollIntoView({behavior:"smooth", block:"center"});
+  return !first;
+}
+
+/* ---------- pantallas ---------- */
+function setProgress(steps){
+  const p = $("#progress");
+  if (ended || view !== "survey"){ p.hidden = true; return; }
+  p.hidden = false;
+  $("#pname").textContent = "Sección " + (step+1) + " de " + steps.length;
+  $("#pcount").textContent = Math.round(step / steps.length * 100) + " %";
+  $("#pbar").style.width = (step / steps.length * 100) + "%";
+}
+
+function render(){
+  const app = $("#app"); app.replaceChildren();
+  if (view === "results"){ renderResults(app); return; }
+  if (ended){ app.append(h("section", {class:"card end"}, h("h2", {text:"Gracias"}), h("p", {text:ended}))); setProgress([]); return; }
+  const steps = visible();
+  if (step >= steps.length) step = steps.length - 1;
+  const sec = steps[step];
+  setProgress(steps);
+  const card = h("section", {class:"card"}, h("h2", {text: sec.title}));
+  if (sec.texto) card.append(h("div", {class:"intro"}, sec.texto.map(t => h("p", {text:t}))));
+  for (const it of sec.items) card.append(field(it));
+  const last = step === steps.length - 1;
+  const next = h("button", {class:"primary", id:"next", text: last ? "Enviar respuestas" : "Siguiente"});
+  next.addEventListener("click", () => onNext(sec, steps, next));
+  card.append(h("div", {class:"nav"},
+    step > 0 ? h("button", {id:"prev", text:"Anterior", onclick:() => { step--; lsSet({answers, step}); render(); window.scrollTo(0,0); }}) : h("span"),
+    next));
+  app.append(card);
+}
+
+function onNext(sec, steps, btn){
+  if (!validate(sec)) return;
+  for (const it of sec.items){
+    if (it.endIf && answers[it.id] === it.endIf.equals){ ended = it.endIf.message; lsClear(); render(); window.scrollTo(0,0); return; }
+  }
+  if (step < steps.length - 1){ step++; lsSet({answers, step}); render(); window.scrollTo(0,0); return; }
+  enviar(btn);
+}
+
+async function guardarDoc(doc){
+  if (!supabaseConfigured()) throw new Error("Falta configurar Supabase en el HTML.");
+  const res = await fetch(SUPABASE_URL + "/rest/v1/" + SUPABASE_TABLE, {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_ANON_KEY,
+      "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+      "Content-Type": "application/json",
+      "Prefer": "return=minimal"
+    },
+    body: JSON.stringify({
+      version: doc.version,
+      enviado_en: doc.enviadoEn,
+      duracion_seg: doc.duracionSeg,
+      respuestas: doc.respuestas
+    })
+  });
+  if (!res.ok) throw new Error("Supabase respondió " + res.status + ": " + await res.text());
+}
+
+async function enviar(btn){
+  btn.disabled = true; btn.textContent = "Enviando...";
+  const doc = { version: I.version, enviadoEn: new Date().toISOString(), duracionSeg: Math.round((Date.now()-t0)/1000), respuestas: answers };
+  try {
+    await guardarDoc(doc);
+    lsClear(); ended = "Tus respuestas quedaron registradas. Puedes cerrar esta página."; render(); window.scrollTo(0,0);
+  } catch (e) {
+    renderFallback(doc);
+  }
+}
+
+function renderFallback(doc){
+  const app = $("#app"); app.replaceChildren(); $("#progress").hidden = true;
+  const json = JSON.stringify(doc, null, 2);
+  const card = h("section", {class:"card end"},
+    h("h2", {text:"No pude guardar tus respuestas aquí"}),
+    h("p", {text:"Tus respuestas no se enviaron al servidor. Para no perderlas, guárdalas en un archivo y entrégaselo a quien te compartió la encuesta."}));
+  const save = h("button", {class:"primary", text:"Guardar mis respuestas en un archivo"});
+  const msg = h("p", {class:"note"});
+  save.addEventListener("click", async () => {
+    try {
+      const d = await window.claude.use("downloads");
+      if (!d) throw new Error("no");
+      await d.save({filename:"respuestas-encuesta.json", data: json});
+      msg.textContent = "Listo. Revisa tu carpeta de descargas.";
+    } catch (e) { msg.textContent = "No se pudo descargar desde aquí. Copia el texto de abajo y envíalo."; }
+  });
+  const ta = h("textarea", {readonly:true, "aria-label":"Respuestas en texto", style:"min-height:140px;font-family:monospace;font-size:12px"}); ta.value = json;
+  card.append(save, msg, ta);
+  app.append(card);
+}
+
+/* ---------- resultados (solo editores) ---------- */
+function allFields(){
+  const f = [];
+  for (const s of I.sections) for (const it of s.items){
+    if (it.type === "likert") it.rows.forEach(r => f.push({id:r.id, label:r.text, type:"likert", scale:I.scales[it.scale]}));
+    else { f.push({id:it.id, label:it.label, type:it.type, options:it.options}); if (it.other) f.push({id:it.id+"_otra", label:it.label+" (otra)", type:"text"}); }
+  }
+  return f;
+}
+function csvCell(v){ if (v == null) return ""; if (Array.isArray(v)) v = v.join(" | "); v = String(v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+
+async function renderResults(app){
+  setProgress([]);
+  app.replaceChildren();
+  const card = h("section", {class:"card"}, h("h2", {text:"Resultados de la encuesta"}));
+  app.append(card);
+  if (!supabaseConfigured()) {
+    card.append(h("p", {text:"Primero debes configurar la URL y la clave pública de Supabase al inicio del archivo HTML."}));
+    return;
+  }
+  const sessionKey = "encuesta_ia_admin_token";
+  let token = sessionStorage.getItem(sessionKey);
+  const showLogin = (message) => {
+    card.replaceChildren(h("h2", {text:"Panel privado de resultados"}));
+    card.append(h("p", {class:"note", text: message || "Inicia sesión con el usuario administrador que creaste en Supabase."}));
+    const email = h("input", {type:"email", placeholder:"Correo del administrador", autocomplete:"username"});
+    const pass = h("input", {type:"password", placeholder:"Contraseña", autocomplete:"current-password"});
+    const login = h("button", {class:"primary", text:"Entrar", style:"margin-top:14px"});
+    const status = h("p", {class:"note"});
+    login.addEventListener("click", async () => {
+      if (!email.value || !pass.value) { status.textContent = "Escribe tu correo y contraseña."; return; }
+      login.disabled = true; status.textContent = "Verificando acceso...";
+      try {
+        const r = await fetch(SUPABASE_URL + "/auth/v1/token?grant_type=password", {method:"POST", headers:{"apikey":SUPABASE_ANON_KEY,"Content-Type":"application/json"}, body:JSON.stringify({email:email.value,password:pass.value})});
+        const data = await r.json();
+        if (!r.ok || !data.access_token) throw new Error(data.msg || data.message || "Credenciales incorrectas.");
+        sessionStorage.setItem(sessionKey, data.access_token); token = data.access_token; await loadResults();
+      } catch(e) { status.textContent = "No se pudo iniciar sesión: " + e.message; login.disabled = false; }
+    });
+    card.append(email, pass, login, status);
+  };
+  const loadResults = async () => {
+    card.replaceChildren(h("h2", {text:"Resultados"}), h("p", {class:"note", text:"Cargando respuestas..."}));
+    try {
+      const r = await fetch(SUPABASE_URL + "/rest/v1/" + SUPABASE_TABLE + "?select=*&order=enviado_en.desc", {headers:{"apikey":SUPABASE_ANON_KEY,"Authorization":"Bearer " + token}});
+      if (r.status === 401 || r.status === 403) { sessionStorage.removeItem(sessionKey); token = null; showLogin("Tu sesión expiró o no tienes permisos. Vuelve a iniciar sesión."); return; }
+      if (!r.ok) throw new Error(await r.text());
+      const docs = await r.json();
+      card.replaceChildren(h("h2", {text:"Resultados"}), h("p", {text: docs.length + (docs.length === 1 ? " respuesta registrada." : " respuestas registradas.")}));
+      const fields = allFields();
+      const rows = [];
+      for (const f of fields) {
+        const vals = docs.map(d => d.respuestas && d.respuestas[f.id]).filter(v => v != null && v !== "");
+        let resumen = "";
+        if (f.type === "likert") { const nums = vals.filter(v => typeof v === "number"); resumen = nums.length ? "Media " + (nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(2) + " (n=" + nums.length + ")" : ""; }
+        else if (f.type === "single" || f.type === "multi") { const cnt = {}; vals.flat().forEach(v => cnt[v] = (cnt[v]||0)+1); resumen = Object.keys(cnt).map(k => k + ": " + cnt[k]).join(" · "); }
+        else if (f.type === "number") resumen = vals.length ? "Media " + (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) + " (n=" + vals.length + ")" : "";
+        else resumen = vals.length + " respuesta(s) de texto";
+        rows.push(h("tr", null, h("td", {text:f.label}), h("td", {text:resumen})));
+      }
+      card.append(h("div", {class:"scroll"}, h("table", null, h("thead", null, h("tr", null, h("th", {text:"Pregunta"}), h("th", {text:"Resumen"}))), h("tbody", null, rows))));
+      const csv = h("button", {class:"primary", text:"Descargar Excel / CSV", style:"margin-top:16px"});
+      csv.addEventListener("click", () => {
+        const head = ["enviado_en","duracion_seg"].concat(fields.map(f=>f.id));
+        const lines = [head.join(",")].concat(docs.map(d=>head.map(k=>csvCell(k==="enviado_en"||k==="duracion_seg"?d[k]:(d.respuestas||{})[k])).join(",")));
+        const blob = new Blob(["\ufeff"+lines.join("\n")], {type:"text/csv;charset=utf-8;"});
+        const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "respuestas-encuesta-ia.csv"; a.click(); URL.revokeObjectURL(a.href);
+      });
+      const pdf = h("button", {text:"Guardar resultados en PDF", style:"margin:12px 0 0 8px"});
+      pdf.addEventListener("click", () => window.print());
+      const logout = h("button", {text:"Cerrar sesión", style:"margin:12px 0 0 8px"});
+      logout.addEventListener("click", () => { sessionStorage.removeItem(sessionKey); token=null; showLogin("Has cerrado sesión."); });
+      card.append(csv, pdf, logout, h("p", {class:"note", style:"margin-top:12px", text:"El PDF se genera desde la opción Imprimir del navegador: selecciona ‘Guardar como PDF’. El CSV se puede abrir con Excel."}));
+      const detailTitle = h("h2", {text:"Respuestas individuales", style:"margin-top:28px"}); card.append(detailTitle);
+      docs.forEach((d,i) => {
+        const details = h("details", {style:"border-top:1px solid var(--line);padding:12px 0"});
+        details.append(h("summary", {text:"Respuesta " + (i+1) + " · " + (d.enviado_en ? new Date(d.enviado_en).toLocaleString() : "fecha no disponible")}));
+        const body = h("div", {style:"padding:8px 0"});
+        fields.forEach(f => { const v=d.respuestas && d.respuestas[f.id]; if(v!=null && v!=="") body.append(h("p", null, h("strong", {text:f.label+": "}), String(Array.isArray(v)?v.join(", "):v))); });
+        details.append(body); card.append(details);
+      });
+    } catch(e) { card.replaceChildren(h("h2", {text:"No se pudieron cargar los resultados"}), h("p", {text:e.message}), h("button", {text:"Volver a iniciar sesión", onclick:()=>showLogin()})); }
+  };
+  if (token) await loadResults(); else showLogin();
+}
+
+function route(){
+  view = location.hash === "#resultados" ? "results" : "survey";
+  render();
+}
+
+/* ---------- arranque ---------- */
+const d = lsGet();
+if (d && d.answers){ Object.assign(answers, d.answers); step = Math.min(d.step||0, I.sections.length-1); }
+route();
+window.addEventListener("hashchange", route);
+(async () => {
+  try {
+    const c = window.claude; if (!c) return;
+    const u = await c.use("user");
+    if (u && await u.canEdit()){
+      /* los editores abren #resultados a mano */
+    } else if (location.hash === "#resultados"){ location.hash = ""; }
+  } catch(e){}
+})();
+})();
+</script>
+
+</body></html>
